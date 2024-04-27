@@ -1,5 +1,5 @@
 //
-//  FetchData.swift
+//  WalletData.swift
 //  Stock
 //
 //  Created by Naishadh Vora on 25/04/24.

@@ -10,6 +10,7 @@ import SwiftUI
 struct Home: View {
     
     @StateObject var walletModel = WalletViewModel()
+    @StateObject var portfolioModel = PortfolioViewModel()
     @State private var searchText = ""
 
     var formattedDate: String {
@@ -28,7 +29,7 @@ struct Home: View {
             }
             .padding(.horizontal)
             
-            if walletModel.isLoading {
+            if walletModel.isLoading || portfolioModel.isLoading {
                 Spacer()
                 HStack {
                     Spacer()
@@ -59,22 +60,53 @@ struct Home: View {
                     .padding(.vertical, 10)
                     
                     Section(header: Text("Portfolio")) {
-                        HStack {
+                        VStack {
                             HStack {
-                                VStack {
-                                    Text("Net Worth")
-                                    Text("$\(walletModel.money, specifier: "%.2f")")
-                                        .bold()
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text("Net Worth")
+                                        Text("$\(walletModel.money, specifier: "%.2f")")
+                                            .bold()
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text("Cash Balance")
+                                        Text("$\(walletModel.money, specifier: "%.2f")")
+                                            .bold()
+                                    }
                                 }
                             }
-
-                            Spacer()
-
-                            HStack {
-                                VStack {
-                                    Text("Cash Balance")
-                                    Text("$\(walletModel.money, specifier: "%.2f")")
-                                        .bold()
+                            
+                            ForEach(portfolioModel.portfolio, id: \.ticker) { item in
+                                Divider()
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text("\(item.ticker)")
+                                            .bold()
+                                        
+                                        Text("\(item.quantity) shares")
+                                            .foregroundStyle(.secondary)
+                                            .font(.subheadline)
+                                    }
+                                    
+                                    Spacer()
+                                                                      
+                                    VStack {
+                                        Text("$\(Double(item.quantity) * item.currentPrice, specifier: "%.2f")")
+                                            .bold()
+                                        
+                                        HStack {
+                                            Image(systemName: item.symbol)
+                                            Text("$\(item.changeInPrice, specifier: "%.2f")")
+                                            Text("(\(item.changeInPricePercentage, specifier: "%.2f")%)")
+                                        }
+                                        .foregroundColor(item.color)
+                                    }
+                                    .font(.subheadline)
                                 }
                             }
                         }
@@ -83,6 +115,13 @@ struct Home: View {
                     Section(header: Text("Favorites")) {
                         
                     }
+                    
+                    HStack {
+                        Spacer()
+                        Text("Powered by Finnhub.io")
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                    }
                 }
             }
             Spacer()
@@ -90,6 +129,7 @@ struct Home: View {
         .background(Color.gray.opacity(0.2))
         .onAppear {
             walletModel.fetchWallet()
+            portfolioModel.fetchPortfolio()
         }
     }
 }

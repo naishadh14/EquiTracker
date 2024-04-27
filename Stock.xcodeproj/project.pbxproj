@@ -12,11 +12,14 @@
 		AC6A00B62BDA37EC0064217A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC6A00B52BDA37EC0064217A /* Assets.xcassets */; };
 		AC6A00B92BDA37EC0064217A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC6A00B82BDA37EC0064217A /* Preview Assets.xcassets */; };
 		AC6A00C12BDA382A0064217A /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6A00C02BDA382A0064217A /* Home.swift */; };
-		AC6F286E2BDB778B00B00142 /* FetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F286D2BDB778B00B00142 /* FetchData.swift */; };
+		AC6F286E2BDB778B00B00142 /* WalletData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F286D2BDB778B00B00142 /* WalletData.swift */; };
 		AC6F28712BDC4D2100B00142 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AC6F28702BDC4D2100B00142 /* Alamofire */; };
 		AC6F28732BDC4D2100B00142 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = AC6F28722BDC4D2100B00142 /* AlamofireDynamic */; };
 		AC6F28752BDC4DB400B00142 /* WalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28742BDC4DB400B00142 /* WalletViewModel.swift */; };
 		AC6F28772BDC6B2D00B00142 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28762BDC6B2D00B00142 /* Constants.swift */; };
+		AC6F28792BDC810E00B00142 /* PortfolioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28782BDC810E00B00142 /* PortfolioData.swift */; };
+		AC6F287B2BDC841F00B00142 /* PortfolioItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F287A2BDC841F00B00142 /* PortfolioItem.swift */; };
+		AC6F287D2BDC8A2200B00142 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F287C2BDC8A2200B00142 /* PortfolioViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,9 +29,12 @@
 		AC6A00B52BDA37EC0064217A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC6A00B82BDA37EC0064217A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AC6A00C02BDA382A0064217A /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
-		AC6F286D2BDB778B00B00142 /* FetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchData.swift; sourceTree = "<group>"; };
+		AC6F286D2BDB778B00B00142 /* WalletData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletData.swift; sourceTree = "<group>"; };
 		AC6F28742BDC4DB400B00142 /* WalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewModel.swift; sourceTree = "<group>"; };
 		AC6F28762BDC6B2D00B00142 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		AC6F28782BDC810E00B00142 /* PortfolioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioData.swift; sourceTree = "<group>"; };
+		AC6F287A2BDC841F00B00142 /* PortfolioItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioItem.swift; sourceTree = "<group>"; };
+		AC6F287C2BDC8A2200B00142 /* PortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +76,7 @@
 				AC6A00B52BDA37EC0064217A /* Assets.xcassets */,
 				AC6A00B72BDA37EC0064217A /* Preview Content */,
 				AC6F28742BDC4DB400B00142 /* WalletViewModel.swift */,
+				AC6F287C2BDC8A2200B00142 /* PortfolioViewModel.swift */,
 			);
 			path = Stock;
 			sourceTree = "<group>";
@@ -93,7 +100,9 @@
 		AC6F286C2BDB776500B00142 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				AC6F286D2BDB778B00B00142 /* FetchData.swift */,
+				AC6F286D2BDB778B00B00142 /* WalletData.swift */,
+				AC6F28782BDC810E00B00142 /* PortfolioData.swift */,
+				AC6F287A2BDC841F00B00142 /* PortfolioItem.swift */,
 				AC6F28762BDC6B2D00B00142 /* Constants.swift */,
 			);
 			path = Model;
@@ -178,8 +187,11 @@
 			files = (
 				AC6A00B42BDA37EB0064217A /* ContentView.swift in Sources */,
 				AC6A00C12BDA382A0064217A /* Home.swift in Sources */,
+				AC6F287D2BDC8A2200B00142 /* PortfolioViewModel.swift in Sources */,
 				AC6F28752BDC4DB400B00142 /* WalletViewModel.swift in Sources */,
-				AC6F286E2BDB778B00B00142 /* FetchData.swift in Sources */,
+				AC6F287B2BDC841F00B00142 /* PortfolioItem.swift in Sources */,
+				AC6F28792BDC810E00B00142 /* PortfolioData.swift in Sources */,
+				AC6F286E2BDB778B00B00142 /* WalletData.swift in Sources */,
 				AC6A00B22BDA37EB0064217A /* StockApp.swift in Sources */,
 				AC6F28772BDC6B2D00B00142 /* Constants.swift in Sources */,
 			);
