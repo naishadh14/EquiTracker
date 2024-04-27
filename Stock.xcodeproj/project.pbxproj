@@ -20,6 +20,11 @@
 		AC6F28792BDC810E00B00142 /* PortfolioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28782BDC810E00B00142 /* PortfolioData.swift */; };
 		AC6F287B2BDC841F00B00142 /* PortfolioItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F287A2BDC841F00B00142 /* PortfolioItem.swift */; };
 		AC6F287D2BDC8A2200B00142 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F287C2BDC8A2200B00142 /* PortfolioViewModel.swift */; };
+		AC6F287F2BDDA67200B00142 /* WatchlistData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F287E2BDDA67200B00142 /* WatchlistData.swift */; };
+		AC6F28812BDDA6FE00B00142 /* WatchlistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28802BDDA6FE00B00142 /* WatchlistItem.swift */; };
+		AC6F28832BDDA82600B00142 /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28822BDDA82600B00142 /* WatchlistViewModel.swift */; };
+		AC6F28852BDDBA6A00B00142 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28842BDDBA6A00B00142 /* PortfolioView.swift */; };
+		AC6F28872BDDBBAA00B00142 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28862BDDBBAA00B00142 /* FavoritesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +40,11 @@
 		AC6F28782BDC810E00B00142 /* PortfolioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioData.swift; sourceTree = "<group>"; };
 		AC6F287A2BDC841F00B00142 /* PortfolioItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioItem.swift; sourceTree = "<group>"; };
 		AC6F287C2BDC8A2200B00142 /* PortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
+		AC6F287E2BDDA67200B00142 /* WatchlistData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistData.swift; sourceTree = "<group>"; };
+		AC6F28802BDDA6FE00B00142 /* WatchlistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistItem.swift; sourceTree = "<group>"; };
+		AC6F28822BDDA82600B00142 /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
+		AC6F28842BDDBA6A00B00142 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
+		AC6F28862BDDBBAA00B00142 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +87,7 @@
 				AC6A00B72BDA37EC0064217A /* Preview Content */,
 				AC6F28742BDC4DB400B00142 /* WalletViewModel.swift */,
 				AC6F287C2BDC8A2200B00142 /* PortfolioViewModel.swift */,
+				AC6F28822BDDA82600B00142 /* WatchlistViewModel.swift */,
 			);
 			path = Stock;
 			sourceTree = "<group>";
@@ -93,6 +104,8 @@
 			isa = PBXGroup;
 			children = (
 				AC6A00C02BDA382A0064217A /* Home.swift */,
+				AC6F28842BDDBA6A00B00142 /* PortfolioView.swift */,
+				AC6F28862BDDBBAA00B00142 /* FavoritesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -102,6 +115,8 @@
 			children = (
 				AC6F286D2BDB778B00B00142 /* WalletData.swift */,
 				AC6F28782BDC810E00B00142 /* PortfolioData.swift */,
+				AC6F287E2BDDA67200B00142 /* WatchlistData.swift */,
+				AC6F28802BDDA6FE00B00142 /* WatchlistItem.swift */,
 				AC6F287A2BDC841F00B00142 /* PortfolioItem.swift */,
 				AC6F28762BDC6B2D00B00142 /* Constants.swift */,
 			);
@@ -187,13 +202,18 @@
 			files = (
 				AC6A00B42BDA37EB0064217A /* ContentView.swift in Sources */,
 				AC6A00C12BDA382A0064217A /* Home.swift in Sources */,
+				AC6F28832BDDA82600B00142 /* WatchlistViewModel.swift in Sources */,
 				AC6F287D2BDC8A2200B00142 /* PortfolioViewModel.swift in Sources */,
+				AC6F28872BDDBBAA00B00142 /* FavoritesView.swift in Sources */,
 				AC6F28752BDC4DB400B00142 /* WalletViewModel.swift in Sources */,
 				AC6F287B2BDC841F00B00142 /* PortfolioItem.swift in Sources */,
+				AC6F287F2BDDA67200B00142 /* WatchlistData.swift in Sources */,
 				AC6F28792BDC810E00B00142 /* PortfolioData.swift in Sources */,
 				AC6F286E2BDB778B00B00142 /* WalletData.swift in Sources */,
 				AC6A00B22BDA37EB0064217A /* StockApp.swift in Sources */,
 				AC6F28772BDC6B2D00B00142 /* Constants.swift in Sources */,
+				AC6F28812BDDA6FE00B00142 /* WatchlistItem.swift in Sources */,
+				AC6F28852BDDBA6A00B00142 /* PortfolioView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

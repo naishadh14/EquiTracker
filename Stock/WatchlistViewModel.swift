@@ -1,26 +1,26 @@
 //
-//  PortfolioViewModel.swift
+//  WatchlistViewModel.swift
 //  Stock
 //
-//  Created by Naishadh Vora on 26/04/24.
+//  Created by Naishadh Vora on 27/04/24.
 //
 
 import Foundation
 
-class PortfolioViewModel: ObservableObject {
-    @Published var portfolio: [PortfolioItem] = []
+class WatchlistViewModel: ObservableObject {
+    @Published var watchlist: [WatchlistItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    func fetchPortfolio() {
+    func fetchWatchlist() {
         isLoading = true
 
-        PortfolioData.portfolio.fetchPortfolio { result in
+        WatchlistData.watchlist.fetchWatchlist { result in
             DispatchQueue.main.async {
                 self.isLoading = false
                 switch result {
-                case .success(let portfolio):
-                    self.portfolio = portfolio
+                case .success(let watchlist):
+                    self.watchlist = watchlist
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }

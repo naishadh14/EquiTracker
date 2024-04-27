@@ -1,29 +1,29 @@
 //
-//  PortfolioData.swift
+//  FavoriteData.swift
 //  Stock
 //
-//  Created by Naishadh Vora on 26/04/24.
+//  Created by Naishadh Vora on 27/04/24.
 //
 
 import Foundation
 import Alamofire
 
-class PortfolioData {
-    static let portfolio = PortfolioData()
+class WatchlistData {
+    static let watchlist = WatchlistData()
 
     private init() {}
-    
-    func fetchPortfolio(completion: @escaping (Result<[PortfolioItem], Error>) -> Void) {
+
+    func fetchWatchlist(completion: @escaping (Result<[WatchlistItem], Error>) -> Void) {
         if(Constants.testing) {
-            let testData: [PortfolioItem] = [
-                            PortfolioItem(ticker: "TSLA", name: "Tesla Inc", quantity: 10, totalCost: 1657.65, currentPrice: 168.29),
-                            PortfolioItem(ticker: "RIVN", name: "Rivian Automotive Inc", quantity: 1, totalCost: 10.44, currentPrice: 9.04)
-                        ]
+            let testData: [WatchlistItem] = [
+                    WatchlistItem(ticker: "MSFT", name: "Microsoft Corp", currentPrice: 406.32, changeInPrice: 7.28, changeInPricePercentage: 1.8244),
+                    WatchlistItem(ticker: "RIVN", name: "Rivian Automotive Inc", currentPrice: 9.04, changeInPrice: 0.52, changeInPricePercentage: 6.1033)
+                ]
             completion(.success(testData))
             return
         }
 
-        let url = Constants.baseURL + "/portfolio"
+        let url = Constants.baseURL + "/watchlist"
         AF.request(url).responseJSON { response in
             do {
                 switch response.result {
@@ -32,8 +32,8 @@ class PortfolioData {
                         throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unexpected data"])
                     }
                     let jsonData = try JSONSerialization.data(withJSONObject: data)
-                    let portfolio = try JSONDecoder().decode([PortfolioItem].self, from: jsonData)
-                    completion(.success(portfolio))
+                    let watchlist = try JSONDecoder().decode([WatchlistItem].self, from: jsonData)
+                    completion(.success(watchlist))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -43,3 +43,4 @@ class PortfolioData {
         }
     }
 }
+

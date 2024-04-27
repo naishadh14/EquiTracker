@@ -10,4 +10,5 @@ import Foundation
 struct Constants {
 //    static let baseURL = "https://express-backend-stock-app.uw.r.appspot.com"
     static let baseURL = "http://localhost:8080"
+    static let testing = true
 }

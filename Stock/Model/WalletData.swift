@@ -10,12 +10,11 @@ import Alamofire
 
 class WalletData {
     static let wallet = WalletData()
-    let testing = true
     
     private init() {}
     
     func fetchWallet(completion: @escaping (Result<Double, Error>) -> Void) {
-        if(testing) {
+        if(Constants.testing) {
             completion(.success(25000.00))
             return
         }
