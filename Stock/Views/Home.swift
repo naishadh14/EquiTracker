@@ -63,11 +63,52 @@ struct Home: View {
                         .padding(.vertical, 10)
                         
                         Section(header: Text("Portfolio")) {
-                            PortfolioView(cashBalance: walletModel.money, netWorth: walletModel.money, portfolio: $portfolioModel.portfolio)
+                            PortfolioView(cashBalance: walletModel.money, netWorth: walletModel.money)
+                            
+                            ForEach($portfolioModel.portfolio, id: \.ticker) { $item in
+                                NavigationLink(destination: StockDetailView()) {
+                                    PortfolioStockRow(item: $item)
+                                }
+                            }
+                            .onDelete(perform: deletePortfolioItems)
+                            .onMove(perform: movePortfolioItems)
                         }
 
                         Section(header: Text("Favorites")) {
-                            FavoritesView(watchlist: watchlistModel.watchlist)
+                            ForEach(watchlistModel.watchlist.indices, id: \.self) { index in
+                                
+                                NavigationLink(destination: StockDetailView()) {
+                                    let item = watchlistModel.watchlist[index]
+                                    
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text("\(item.ticker)")
+                                                .bold()
+                                            
+                                            Text("\(item.name)")
+                                                .foregroundStyle(.secondary)
+                                                .font(.subheadline)
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        VStack {
+                                            Text("$\(item.currentPrice, specifier: "%.2f")")
+                                                .bold()
+                                            
+                                            HStack {
+                                                Image(systemName: item.symbol)
+                                                Text("$\(item.changeInPrice, specifier: "%.2f")")
+                                                Text("(\(item.changeInPricePercentage, specifier: "%.2f")%)")
+                                            }
+                                            .foregroundColor(item.color)
+                                        }
+                                        .font(.subheadline)
+                                    }
+                                }
+                            }
+                            .onDelete(perform: deleteWatchlistItems)
+                            .onMove(perform: moveWatchlistItems)
                         }
                         
                         HStack {
@@ -94,6 +135,22 @@ struct Home: View {
             }
             .navigationBarItems(leading: EditButton())
         }
+    }
+    
+    func deletePortfolioItems(at offsets: IndexSet) {
+        portfolioModel.portfolio.remove(atOffsets: offsets)
+    }
+
+    func movePortfolioItems(from source: IndexSet, to destination: Int) {
+        portfolioModel.portfolio.move(fromOffsets: source, toOffset: destination)
+    }
+    
+    func deleteWatchlistItems(at offsets: IndexSet) {
+        watchlistModel.watchlist.remove(atOffsets: offsets)
+    }
+
+    func moveWatchlistItems(from source: IndexSet, to destination: Int) {
+        watchlistModel.watchlist.move(fromOffsets: source, toOffset: destination)
     }
 }
 

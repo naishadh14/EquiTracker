@@ -10,7 +10,6 @@ import SwiftUI
 struct PortfolioView: View {
     var cashBalance: Double
     var netWorth: Double
-    @Binding var portfolio: [PortfolioItem]
     
     var body: some View {
         VStack {
@@ -33,29 +32,12 @@ struct PortfolioView: View {
                     }
                 }
             }
-            
-            ForEach(portfolio, id: \.ticker) { item in
-                Divider()
-                NavigationLink(destination: StockDetailView()) {
-                    PortfolioStockRow(item: item)
-                }
-            }
-//            .onDelete(perform: deleteItems)
-//            .onMove(perform: moveItems)
         }
     }
-    
-//    func deleteItems(at offsets: IndexSet) {
-//        portfolio.remove(atOffsets: offsets)
-//    }
-//        
-//    func moveItems(from source: IndexSet, to destination: Int) {
-//        portfolio.move(fromOffsets: source, toOffset: destination)
-//    }
 }
 
 struct PortfolioStockRow: View {
-    let item: PortfolioItem
+    @Binding var item: PortfolioItem
     
     var body: some View {
         HStack {
