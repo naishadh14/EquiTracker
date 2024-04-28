@@ -66,7 +66,7 @@ struct Home: View {
                             PortfolioView(cashBalance: walletModel.money, netWorth: walletModel.money)
                             
                             ForEach($portfolioModel.portfolio, id: \.ticker) { $item in
-                                NavigationLink(destination: StockDetailView()) {
+                                NavigationLink(destination: StockView(ticker: item.ticker)) {
                                     PortfolioStockRow(item: $item)
                                 }
                             }
@@ -77,8 +77,8 @@ struct Home: View {
                         Section(header: Text("Favorites")) {
                             ForEach(watchlistModel.watchlist.indices, id: \.self) { index in
                                 
-                                NavigationLink(destination: StockDetailView()) {
-                                    let item = watchlistModel.watchlist[index]
+                                let item = watchlistModel.watchlist[index]
+                                NavigationLink(destination: StockView(ticker: item.ticker)) {
                                     
                                     HStack {
                                         VStack(alignment: .leading) {

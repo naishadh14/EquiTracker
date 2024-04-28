@@ -67,9 +67,3 @@ struct PortfolioStockRow: View {
         }
     }
 }
-
-struct StockDetailView: View {
-    var body : some View {
-        Text("Stock detail")
-    }
-}
