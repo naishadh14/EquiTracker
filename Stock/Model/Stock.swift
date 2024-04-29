@@ -20,6 +20,7 @@ struct Stock: Codable {
     let phone: String
     let shareOutstanding: Double
     let ticker: String
+    let weburl: String
     let peers: [String]
     
     init(country: String = "",
@@ -34,6 +35,7 @@ struct Stock: Codable {
          phone: String = "",
          shareOutstanding: Double = 0.0,
          ticker: String = "",
+         weburl: String = "",
          peers: [String] = []) {
         self.country = country
         self.currency = currency
@@ -47,6 +49,7 @@ struct Stock: Codable {
         self.phone = phone
         self.shareOutstanding = shareOutstanding
         self.ticker = ticker
+        self.weburl = weburl
         self.peers = peers
     }
 }

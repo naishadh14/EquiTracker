@@ -98,6 +98,7 @@ class StockData {
                 phone: "14089961010",
                 shareOutstanding: 15441.88,
                 ticker: "AAPL",
+                weburl: "https://www.apple.com/",
                 peers: ["AAPL", "DELL", "SMCI", "HPQ", "WDC", "HPE", "NTAP", "PSTG", "IONQ"]
             )
             completion(.success(testData))
