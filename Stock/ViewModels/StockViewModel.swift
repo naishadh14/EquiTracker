@@ -15,6 +15,8 @@ class StockViewModel: ObservableObject {
     @Published var totalCost: Double = 0.0
     @Published var avgCost: Double = 0.0
     @Published var color: Color = .gray
+    @Published var sentiment: Sentiment = Sentiment()
+    @Published var news: [NewsItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     
@@ -56,6 +58,32 @@ class StockViewModel: ObservableObject {
                     self.quantity = data.0
                     self.totalCost = data.1
                     self.avgCost = self.totalCost / Double(self.quantity)
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.enter()
+        StockData.stock.fetchSentiment(ticker: ticker) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let data):
+                    self.sentiment = data
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.enter()
+        StockData.stock.fetchNews(ticker: ticker) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let data):
+                    self.news = data
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }

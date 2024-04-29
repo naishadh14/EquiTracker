@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct StockView: View {
     
@@ -48,16 +49,18 @@ struct StockView: View {
                                 .foregroundColor(stockModel.price.color)
                             }
                             
-                            //                        HourlyChartView(ticker: ticker)
-                            //                            .frame(height: 400)
+//                            HourlyChartView(ticker: ticker)
+//                                .frame(height: 400)
+//                            
+//                            PortfolioSection(stockModel: stockModel)
+//                            
+//                            StatsSection(stockModel: stockModel)
+//                            
+//                            AboutSection(stockModel: stockModel)
+//                            
+//                            InsightsSection(stockModel: stockModel)
                             
-                            //                        PortfolioSection(stockModel: stockModel)
-                            
-                            StatsSection(stockModel: stockModel)
-                            
-                            AboutSection(stockModel: stockModel)
-                            
-                            InsightsSection(stockModel: stockModel)
+                            NewsSection(stockModel: stockModel)
 
                             Spacer()
                         }
@@ -68,6 +71,89 @@ struct StockView: View {
                     stockModel.fetchStock(ticker: ticker)
                 }
             }
+        }
+    }
+}
+
+struct NewsSection: View {
+    @StateObject var stockModel = StockViewModel()
+    
+    var body : some View {
+        VStack(alignment: .leading) {
+            Text("News")
+                .font(.title)
+                .padding(.vertical)
+            
+            ForEach(stockModel.news.indices, id: \.self) { index in
+                let item = stockModel.news[index]
+                if index == 0 {
+                    FirstNewsRow(item: item)
+                } else {
+                    NewsRow(item: item)
+                }
+            }
+        }
+    }
+}
+
+struct FirstNewsRow : View {
+    var item = NewsItem()
+    
+    var body : some View {
+        VStack(alignment: .leading) {
+            KFImage.url(URL(string: item.image))
+                .resizable()
+                .scaledToFill()
+                .frame(width: .infinity, height: 200)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(.vertical)
+
+            HStack {
+                Text("\(item.source)")
+                    .bold()
+                Text("\(item.hours) hrs, \(item.minutes) min")
+            }
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+            
+            Text("\(item.headline)")
+                .font(.headline)
+                .bold()
+        }
+        
+        Spacer()
+        
+        Divider()
+            .padding(.vertical, 5)
+    }
+}
+
+struct NewsRow : View {
+    var item = NewsItem()
+
+    var body : some View {
+        HStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("\(item.source)")
+                        .bold()
+                    Text("\(item.hours) hrs, \(item.minutes) min")
+                }
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                
+                Text("\(item.headline)")
+                    .font(.headline)
+                    .bold()
+            }
+            
+            Spacer()
+
+            KFImage.url(URL(string: item.image))
+                .resizable()
+                .scaledToFill()
+                .frame(width: 100, height: 100)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }
 }
@@ -87,8 +173,48 @@ struct InsightsSection: View {
                     .font(.title)
                 Spacer()
             }
+            .padding(.bottom, 20)
             
-            
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("\(stockModel.stock.name)")
+                        .bold()
+                    Divider()
+                    Text("Total")
+                        .bold()
+                    Divider()
+                    Text("Positive")
+                        .bold()
+                    Divider()
+                    Text("Negative")
+                        .bold()
+                    Divider()
+                }
+                
+                VStack {
+                    Text("MSPR")
+                        .bold()
+                    Divider()
+                    Text("\(stockModel.sentiment.totalMspr, specifier: "%.2f")")
+                    Divider()
+                    Text("\(stockModel.sentiment.positiveMspr, specifier: "%.2f")")
+                    Divider()
+                    Text("\(stockModel.sentiment.negativeMspr, specifier: "%.2f")")
+                    Divider()
+                }
+                
+                VStack {
+                    Text("Change")
+                        .bold()
+                    Divider()
+                    Text("\(stockModel.sentiment.totalMspr, specifier: "%.2f")")
+                    Divider()
+                    Text("\(stockModel.sentiment.positiveMspr, specifier: "%.2f")")
+                    Divider()
+                    Text("\(stockModel.sentiment.negativeMspr, specifier: "%.2f")")
+                    Divider()
+                }
+            }
         }
     }
 }

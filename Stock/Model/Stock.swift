@@ -103,3 +103,60 @@ struct Price: Codable {
     }
 }
 
+struct Sentiment: Codable {
+    var totalMspr: Double
+    var totalChange: Double
+    var positiveMspr: Double
+    var positiveChange: Double
+    var negativeMspr: Double
+    var negativeChange: Double
+
+    init(totalMspr: Double = 0, totalChange: Double = 0, positiveMspr: Double = 0, positiveChange: Double = 0, negativeMspr: Double = 0, negativeChange: Double = 0) {
+        self.totalMspr = totalMspr
+        self.totalChange = totalChange
+        self.positiveMspr = positiveMspr
+        self.positiveChange = positiveChange
+        self.negativeMspr = negativeMspr
+        self.negativeChange = negativeChange
+    }
+}
+
+struct NewsItem: Codable {
+    var category: String
+    var datetime: Int
+    var headline: String
+    var id: Int
+    var image: String
+    var related: String
+    var source: String
+    var summary: String
+    var url: String
+    
+    var timeDifference: Int {
+        return Int(Date().timeIntervalSince1970) - datetime
+    }
+    
+    var days: Int {
+        return timeDifference / 86400
+    }
+    
+    var hours: Int {
+        return (timeDifference % 86400) / 3600
+    }
+    
+    var minutes: Int {
+        return (timeDifference % 3600) / 60
+    }
+    
+    init(category: String = "", datetime: Int = 0, headline: String = "", id: Int = 0, image: String = "", related: String = "", source: String = "", summary: String = "", url: String = "") {
+        self.category = category
+        self.datetime = datetime
+        self.headline = headline
+        self.id = id
+        self.image = image
+        self.related = related
+        self.source = source
+        self.summary = summary
+        self.url = url
+    }
+}
