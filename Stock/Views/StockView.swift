@@ -52,7 +52,7 @@ struct StockView: View {
 //                            HourlyChartView(ticker: ticker)
 //                                .frame(height: 400)
 //                            
-//                            PortfolioSection(stockModel: stockModel)
+                            PortfolioSection(stockModel: stockModel)
 //                            
 //                            StatsSection(stockModel: stockModel)
 //                            
@@ -60,7 +60,7 @@ struct StockView: View {
 //                            
 //                            InsightsSection(stockModel: stockModel)
                             
-                            NewsSection(stockModel: stockModel)
+//                            NewsSection(stockModel: stockModel)
 
                             Spacer()
                         }
@@ -77,22 +77,114 @@ struct StockView: View {
 
 struct NewsSection: View {
     @StateObject var stockModel = StockViewModel()
+    @State private var selectedNewsIndex: Int?
+    @State private var showingSheet = false
     
     var body : some View {
         VStack(alignment: .leading) {
             Text("News")
                 .font(.title)
                 .padding(.vertical)
-            
+
             ForEach(stockModel.news.indices, id: \.self) { index in
                 let item = stockModel.news[index]
-                if index == 0 {
-                    FirstNewsRow(item: item)
-                } else {
-                    NewsRow(item: item)
+                Button(action: {
+                    selectedNewsIndex = index
+                    showingSheet.toggle()
+                }) {
+                    if index == 0 {
+                        FirstNewsRow(item: item)
+                    } else {
+                        NewsRow(item: item)
+                    }
+                }
+                .buttonStyle(PlainButtonStyle())
+                .sheet(isPresented: $showingSheet) {
+                    NewsSheetView(item: stockModel.news[selectedNewsIndex ?? 0])
                 }
             }
         }
+    }
+}
+
+struct NewsSheetView: View {
+    @Environment(\.dismiss) var dismiss
+    @State var item = NewsItem()
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Spacer()
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "multiply")
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("\(item.source)")
+                        .font(.title)
+                        .bold()
+                    Text("\(formatDate(from: item.datetime))")
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+            }
+            Divider()
+                .padding(.vertical)
+            
+            Text("\(item.headline)")
+                .font(.title2)
+                .bold()
+            Text("\(item.summary)")
+            
+            HStack {
+                Text("For more details, click ")
+                    .foregroundStyle(.secondary)
+                Button(action: {
+                    if let url = URL(string: item.url) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }) {
+                    Text("here")
+                }
+                .padding(.leading, -5)
+            }
+            
+            HStack {
+                Image("twitter-logo")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .onTapGesture {
+                        if let url = URL(string: "https://twitter.com/intent/tweet?text=\(item.headline + " " + item.url)") {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    }
+                
+                Image("fb-logo")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .onTapGesture {
+                        if let url = URL(string: "https://www.facebook.com/sharer/sharer.php?u=\(item.url)") {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    }
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+    
+    func formatDate(from timestamp: Int) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy"
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        return dateFormatter.string(from: date)
     }
 }
 
