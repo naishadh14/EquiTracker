@@ -41,18 +41,6 @@ struct Home: View {
                     }
                     Spacer()
                 } else {
-                    TextField("       Search", text: $searchText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
-                        .overlay(
-                            HStack {
-                                Image(systemName: "magnifyingglass")
-                                    .foregroundColor(.gray)
-                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                    .padding(.leading, 20)
-                            }
-                        )
-                    
                     List {
                         HStack {
                             Text("\(formattedDate)")
@@ -127,6 +115,7 @@ struct Home: View {
                 }
                 Spacer()
             }
+            .searchable(text: $searchText)
             .background(Color.gray.opacity(0.2))
             .onAppear {
                 walletModel.fetchWallet()
