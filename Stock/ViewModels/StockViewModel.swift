@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class StockViewModel: ObservableObject {
+    @Published var money: Double = 0.0
     @Published var stock: Stock = Stock()
     @Published var price: Price = Price()
     @Published var quantity: Int = 0
@@ -84,6 +85,19 @@ class StockViewModel: ObservableObject {
                 switch result {
                 case .success(let data):
                     self.news = data
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.enter()
+        WalletData.wallet.fetchWallet { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let money):
+                    self.money = money
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }
