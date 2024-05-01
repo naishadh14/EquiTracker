@@ -29,13 +29,13 @@ struct Home: View {
                     }
                     Spacer()
                 } else {
-                    if !searchIsActive {
-                        List {
+                    List {
+                        if searchText.currentValue == "" {
                             HomeListView(walletModel: walletModel, portfolioModel: portfolioModel, watchlistModel: watchlistModel)
-                        }
-                    } else {
-                        List {
-                            SearchListView(searchResults: searchResults)
+                        } else {
+                            if !searchResults.isEmpty {
+                                SearchListView(searchResults: searchResults)
+                            }
                         }
                     }
                 }
@@ -79,19 +79,21 @@ struct SearchListView : View {
     var searchResults: [SearchResult] = []
     
     var body : some View {
-        VStack(alignment: .leading) {
-            ForEach(searchResults, id: \.symbol) { item in
-                NavigationLink(destination: StockView(ticker: item.symbol)) {
-                    VStack(alignment: .leading) {
-                        Text("\(item.symbol)")
-                            .bold()
-                            .font(.title2)
-                        Text("\(item.description)")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                    Divider()
+        ForEach(searchResults.indices, id: \.self) { index in
+            let item = searchResults[index]
+            
+            NavigationLink(destination: StockView(ticker: item.symbol)) {
+                
+                VStack(alignment: .leading) {
+                    Text("\(item.symbol)")
+                        .bold()
+                        .font(.title2)
+                    Text("\(item.description)")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
+                
+                Divider()
             }
         }
     }
