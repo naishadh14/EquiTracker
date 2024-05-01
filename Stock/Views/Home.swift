@@ -13,25 +13,13 @@ struct Home: View {
     @StateObject var walletModel = WalletViewModel()
     @StateObject var portfolioModel = PortfolioViewModel()
     @StateObject var watchlistModel = WatchlistViewModel()
-    @State private var searchText = ""
-
-    var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM d, yyyy"
-        return formatter.string(from: Date())
-    }
+    @State private var searchResults: [SearchResult] = []
+    @StateObject private var searchText = DebouncedState(initialValue: "")
+    @State private var searchIsActive = false
 
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
-                HStack {
-                    Text("Stocks")
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .bold()
-                    Spacer()
-                }
-                .padding(.horizontal)
-                
                 if walletModel.isLoading || portfolioModel.isLoading || watchlistModel.isLoading {
                     Spacer()
                     HStack {
@@ -41,105 +29,72 @@ struct Home: View {
                     }
                     Spacer()
                 } else {
-                    List {
-                        HStack {
-                            Text("\(formattedDate)")
-                                .font(.title)
-                                .foregroundStyle(.secondary)
-                                .bold()
+                    if !searchIsActive {
+                        List {
+                            HomeListView(walletModel: walletModel, portfolioModel: portfolioModel, watchlistModel: watchlistModel)
                         }
-                        .padding(.vertical, 10)
-                        
-                        Section(header: Text("Portfolio")) {
-                            PortfolioView(cashBalance: walletModel.money, netWorth: walletModel.money)
-                            
-                            ForEach($portfolioModel.portfolio, id: \.ticker) { $item in
-                                NavigationLink(destination: StockView(ticker: item.ticker)) {
-                                    PortfolioStockRow(item: $item)
-                                }
-                            }
-                            .onDelete(perform: deletePortfolioItems)
-                            .onMove(perform: movePortfolioItems)
-                        }
-
-                        Section(header: Text("Favorites")) {
-                            ForEach(watchlistModel.watchlist.indices, id: \.self) { index in
-                                
-                                let item = watchlistModel.watchlist[index]
-                                NavigationLink(destination: StockView(ticker: item.ticker)) {
-                                    
-                                    HStack {
-                                        VStack(alignment: .leading) {
-                                            Text("\(item.ticker)")
-                                                .bold()
-                                            
-                                            Text("\(item.name)")
-                                                .foregroundStyle(.secondary)
-                                                .font(.subheadline)
-                                        }
-                                        
-                                        Spacer()
-                                        
-                                        VStack {
-                                            Text("$\(item.currentPrice, specifier: "%.2f")")
-                                                .bold()
-                                            
-                                            HStack {
-                                                Image(systemName: item.symbol)
-                                                Text("$\(item.changeInPrice, specifier: "%.2f")")
-                                                Text("(\(item.changeInPricePercentage, specifier: "%.2f")%)")
-                                            }
-                                            .foregroundColor(item.color)
-                                        }
-                                        .font(.subheadline)
-                                    }
-                                }
-                            }
-                            .onDelete(perform: deleteWatchlistItems)
-                            .onMove(perform: moveWatchlistItems)
-                        }
-                        
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                if let url = URL(string: "https://www.finnhub.io") {
-                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                                }
-                            }) {
-                                Text("Powered by Finnhub.io")
-                                    .foregroundColor(.secondary)
-                            }
-                            Spacer()
+                    } else {
+                        List {
+                            SearchListView(searchResults: searchResults)
+//                            Text("\(searchResults)")
                         }
                     }
                 }
+
                 Spacer()
             }
-            .searchable(text: $searchText)
-            .background(Color.gray.opacity(0.2))
-            .onAppear {
-                walletModel.fetchWallet()
-                portfolioModel.fetchPortfolio()
-                watchlistModel.fetchWatchlist()
+            .searchable(text: $searchText.currentValue, isPresented: $searchIsActive)
+            .navigationTitle("Stocks")
+            .navigationBarItems(trailing: EditButton())
+            .onChange(of: searchText.debouncedValue) { newValue in
+                fetchAutocompleteData(for: newValue)
             }
-            .navigationBarItems(leading: EditButton())
+        }
+        .onAppear {
+            walletModel.fetchWallet()
+            portfolioModel.fetchPortfolio()
+            watchlistModel.fetchWatchlist()
         }
     }
     
-    func deletePortfolioItems(at offsets: IndexSet) {
-        portfolioModel.portfolio.remove(atOffsets: offsets)
+    func fetchAutocompleteData(for ticker: String) {
+        guard !ticker.isEmpty, let url = URL(string: "\(Constants.baseURL)/autocomplete?stock_ticker=\(ticker)") else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            do {
+                let results = try JSONDecoder().decode([SearchResult].self, from: data)
+                DispatchQueue.main.async {
+                    self.searchResults = results
+                }
+            } catch {
+                print("Error decoding search results: \(error)")
+            }
+        }
+        task.resume()
     }
+}
 
-    func movePortfolioItems(from source: IndexSet, to destination: Int) {
-        portfolioModel.portfolio.move(fromOffsets: source, toOffset: destination)
-    }
+struct SearchListView : View {
+    var searchResults: [SearchResult] = []
     
-    func deleteWatchlistItems(at offsets: IndexSet) {
-        watchlistModel.watchlist.remove(atOffsets: offsets)
-    }
-
-    func moveWatchlistItems(from source: IndexSet, to destination: Int) {
-        watchlistModel.watchlist.move(fromOffsets: source, toOffset: destination)
+    var body : some View {
+        VStack(alignment: .leading) {
+            ForEach(searchResults, id: \.symbol) { item in
+                NavigationLink(destination: StockView(ticker: item.symbol)) {
+                    VStack(alignment: .leading) {
+                        Text("\(item.symbol)")
+                            .bold()
+                            .font(.title2)
+                        Text("\(item.description)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    Divider()
+                }
+            }
+        }
     }
 }
 

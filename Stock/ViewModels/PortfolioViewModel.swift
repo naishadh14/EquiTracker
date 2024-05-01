@@ -9,6 +9,7 @@ import Foundation
 
 class PortfolioViewModel: ObservableObject {
     @Published var portfolio: [PortfolioItem] = []
+    @Published var portfolioValue: Double = 0.0
     @Published var isLoading = false
     @Published var errorMessage: String?
 
@@ -21,6 +22,9 @@ class PortfolioViewModel: ObservableObject {
                 switch result {
                 case .success(let portfolio):
                     self.portfolio = portfolio
+                    for item in portfolio {
+                        self.portfolioValue += Double(item.quantity) * item.currentPrice
+                    }
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }

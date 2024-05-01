@@ -64,21 +64,15 @@ struct StockView: View {
                             }
                             .frame(height: 700)
                             
-//                            HourlyChartView(ticker: ticker)
-//                                .frame(height: 400)
+                            PortfolioSection(stockModel: stockModel)
                             
-//                            HistoricalChartView(ticker: ticker)
-//                                .frame(height: 500)
+                            StatsSection(stockModel: stockModel)
                             
-//                            PortfolioSection(stockModel: stockModel)
+                            AboutSection(stockModel: stockModel)
                             
-//                            StatsSection(stockModel: stockModel)
+                            InsightsSection(stockModel: stockModel)
                             
-//                            AboutSection(stockModel: stockModel)
-                            
-//                            InsightsSection(stockModel: stockModel)
-                            
-//                            NewsSection(stockModel: stockModel)
+                            NewsSection(stockModel: stockModel)
 
                             Spacer()
                         }

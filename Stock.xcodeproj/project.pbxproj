@@ -31,6 +31,7 @@
 		AC6F28932BDDE07300B00142 /* StockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28922BDDE07300B00142 /* StockViewModel.swift */; };
 		AC6F28952BDE2C7F00B00142 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F28942BDE2C7F00B00142 /* ChartsView.swift */; };
 		AC6F289C2BDED7A400B00142 /* website in Resources */ = {isa = PBXBuildFile; fileRef = AC6F289B2BDED7A400B00142 /* website */; };
+		AC79E0B92BE1D7280010AAE5 /* HomeSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC79E0B82BE1D7280010AAE5 /* HomeSupport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		AC6F28922BDDE07300B00142 /* StockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockViewModel.swift; sourceTree = "<group>"; };
 		AC6F28942BDE2C7F00B00142 /* ChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsView.swift; sourceTree = "<group>"; };
 		AC6F289B2BDED7A400B00142 /* website */ = {isa = PBXFileReference; lastKnownFileType = folder; path = website; sourceTree = "<group>"; };
+		AC79E0B82BE1D7280010AAE5 /* HomeSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSupport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				AC6A00C02BDA382A0064217A /* Home.swift */,
+				AC79E0B82BE1D7280010AAE5 /* HomeSupport.swift */,
 				AC6F28842BDDBA6A00B00142 /* PortfolioView.swift */,
 				AC6F288A2BDDDC3600B00142 /* StockView.swift */,
 				AC6F28942BDE2C7F00B00142 /* ChartsView.swift */,
@@ -252,6 +255,7 @@
 				AC6F28952BDE2C7F00B00142 /* ChartsView.swift in Sources */,
 				AC6A00B22BDA37EB0064217A /* StockApp.swift in Sources */,
 				AC6F28772BDC6B2D00B00142 /* Constants.swift in Sources */,
+				AC79E0B92BE1D7280010AAE5 /* HomeSupport.swift in Sources */,
 				AC6F28812BDDA6FE00B00142 /* WatchlistItem.swift in Sources */,
 				AC6F28852BDDBA6A00B00142 /* PortfolioView.swift in Sources */,
 			);
