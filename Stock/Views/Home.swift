@@ -36,7 +36,6 @@ struct Home: View {
                     } else {
                         List {
                             SearchListView(searchResults: searchResults)
-//                            Text("\(searchResults)")
                         }
                     }
                 }
