@@ -14,7 +14,7 @@ struct Home: View {
     @StateObject var portfolioModel = PortfolioViewModel()
     @StateObject var watchlistModel = WatchlistViewModel()
     @State private var searchResults: [SearchResult] = []
-    @StateObject private var searchText = DebouncedState(initialValue: "")
+    @StateObject private var searchText = DebouncedState(initialValue: "") 
     @State private var searchIsActive = false
 
     var body: some View {

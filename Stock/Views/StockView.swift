@@ -16,7 +16,6 @@ struct StockView: View {
     @State private var toastMessage = ""
     
     var body : some View {
-//        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
                     if stockModel.isLoading {
@@ -56,17 +55,17 @@ struct StockView: View {
                             
                             TabView {
                                 HourlyChartView(ticker: ticker, color: color)
-                                    .frame(height: 400)
+                                    .frame(height: 450)
                                     .tabItem {
                                         Label("Hourly", systemImage: "chart.xyaxis.line")
                                 }
                                 HistoricalChartView(ticker: ticker)
-                                    .frame(height: 650)
+                                    .frame(height: 450)
                                     .tabItem {
                                         Label("Historical", systemImage: "clock")
                                 }
                             }
-                            .frame(height: 700)
+                            .frame(height: 500)
                             
                             PortfolioSection(stockModel: stockModel)
                             
@@ -87,7 +86,6 @@ struct StockView: View {
                     stockModel.fetchStock(ticker: ticker)
                 }
             }
-//        }
         .overlay(ToastMessage(message: toastMessage, isShowing: $showToast).padding(.vertical, 80), alignment: .bottom)
         .onChange(of: showToast) {
             newValue in
