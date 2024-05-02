@@ -22,6 +22,7 @@ class PortfolioViewModel: ObservableObject {
                 switch result {
                 case .success(let portfolio):
                     self.portfolio = portfolio
+                    self.portfolioValue = 0.0
                     for item in portfolio {
                         self.portfolioValue += Double(item.quantity) * item.currentPrice
                     }

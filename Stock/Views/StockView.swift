@@ -588,8 +588,14 @@ struct TradeSheetView : View {
                         .background(Color.clear)
                         .focusEffectDisabled()
                     
-                    Text("Shares")
-                        .font(.system(size: 24))
+                    let quantity = Int(quantityString) ?? 0
+                    if quantity > 0 {
+                        Text("Shares")
+                            .font(.system(size: 24))
+                    } else {
+                        Text("Share")
+                            .font(.system(size: 24))
+                    }
                 }
                 
                 HStack {
