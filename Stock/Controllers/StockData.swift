@@ -173,7 +173,7 @@ class StockData {
                         
                         completion(.success((quantity, totalCost)))
                     } else {
-                        completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unexpected data"])))
+                        completion(.success((0, 0.0)))
                     }
                 case .failure(let error):
                     completion(.failure(error))

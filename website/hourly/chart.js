@@ -1,5 +1,5 @@
-const SERVER_URL = 'http://localhost:8080';
-//const SERVER_URL = 'https://express-backend-stock-app.uw.r.appspot.com';
+//const SERVER_URL = 'http://localhost:8080';
+const SERVER_URL = 'https://express-backend-stock-app.uw.r.appspot.com';
 
 async function fetchHourlyChartData(ticker, color) {
     const now = new Date();

@@ -29,7 +29,9 @@ class StockViewModel: ObservableObject {
                 case .success(let data):
                     self.quantity = data.0
                     self.totalCost = data.1
-                    self.avgCost = self.totalCost / Double(self.quantity)
+                    if self.quantity > 0 {
+                        self.avgCost = self.totalCost / Double(self.quantity)
+                    }
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }
