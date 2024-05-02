@@ -12,6 +12,7 @@ async function fetchDailyChartData(ticker) {
         
         if (response.ok) {
             const data = await response.json();
+            console.log(data);
             renderDailyChart(ticker, data);
         } else {
             throw new Error('Failed to fetch data');
@@ -47,41 +48,35 @@ function renderDailyChart(ticker, chartData) {
         volume.push([item.t, item.v]);
     });
 
-    const chartOptions = {
-        chart: {
-            height: 500,
-            backgroundColor: 'rgba(211, 211, 211, 0.1)'
+    Highcharts.stockChart('container', {
+        rangeSelector: {
+            selected: 2
         },
         title: {
-            text: ticker + ' Historical'
+            text: `${ticker} Historical`
         },
         subtitle: {
             text: 'With SMA and Volume by Price technical indicators'
         },
-        xAxis: {
-            type: 'datetime'
-        },
         yAxis: [{
-            opposite: true,
             startOnTick: false,
             endOnTick: false,
             labels: {
-                align: 'left',
-                x: 3
+                align: 'right',
+                x: -3
             },
             title: {
                 text: 'OHLC'
             },
             height: '60%',
+            lineWidth: 2,
             resize: {
                 enabled: true
-            },
-            lineWidth: 2,
+            }
         }, {
-            opposite: true,
             labels: {
-                align: 'left',
-                x: 3
+                align: 'right',
+                x: -3
             },
             title: {
                 text: 'Volume'
@@ -89,7 +84,7 @@ function renderDailyChart(ticker, chartData) {
             top: '65%',
             height: '35%',
             offset: 0,
-            lineWidth: 2,
+            lineWidth: 2
         }],
         tooltip: {
             split: true
@@ -99,26 +94,17 @@ function renderDailyChart(ticker, chartData) {
                 dataGrouping: {
                     units: groupingUnits
                 }
-            },
-            rangeSelector: {
-                verticalAlign: 'left',
-            },
-            sma: {
-                smoothing: true
             }
-        },
-        legend: {
-            enabled: false
         },
         series: [{
             type: 'candlestick',
-            name: 'OHLC',
+            name: `${ticker} OHLC`,
             id: 'ohlc',
             zIndex: 2,
             data: ohlc
         }, {
             type: 'column',
-            name: 'Volume',
+            name: `${ticker} Volume`,
             id: 'volume',
             data: volume,
             yAxis: 1
@@ -142,8 +128,5 @@ function renderDailyChart(ticker, chartData) {
                 enabled: false
             }
         }]
-    };
-
-    const container = document.getElementById('chartContainer');
-    Highcharts.chart(container, chartOptions);
+    });
 }

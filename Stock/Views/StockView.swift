@@ -55,17 +55,17 @@ struct StockView: View {
                             
                             TabView {
                                 HourlyChartView(ticker: ticker, color: color)
-                                    .frame(height: 450)
+                                    .frame(height: 400)
                                     .tabItem {
                                         Label("Hourly", systemImage: "chart.xyaxis.line")
                                 }
                                 HistoricalChartView(ticker: ticker)
-                                    .frame(height: 450)
+                                    .frame(height: 400)
                                     .tabItem {
                                         Label("Historical", systemImage: "clock")
                                 }
                             }
-                            .frame(height: 500)
+                            .frame(height: 450)
                             
                             PortfolioSection(stockModel: stockModel)
                             
