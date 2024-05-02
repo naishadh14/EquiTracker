@@ -112,11 +112,11 @@ struct HomeListView: View {
     func movePortfolioItems(from source: IndexSet, to destination: Int) {
         portfolioModel.portfolio.move(fromOffsets: source, toOffset: destination)
     }
-    
+
     func deleteWatchlistItems(at offsets: IndexSet) {
         offsets.forEach { index in
             let stockTicker = watchlistModel.watchlist[index].ticker
-            deleteStockTickerFromAPI(stockTicker: stockTicker) { success in
+            removeStockFromFavorite(stockTicker: stockTicker) { success in
                 if success {
                     DispatchQueue.main.async {
                         watchlistModel.watchlist.remove(at: index)
@@ -128,31 +128,6 @@ struct HomeListView: View {
         }
     }
     
-    func deleteStockTickerFromAPI(stockTicker: String, completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "\(Constants.baseURL)/deleteWatchlist?stock_ticker=\(stockTicker)") else {
-            completion(false)
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(false)
-                return
-            }
-            do {
-                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let success = jsonResponse["success"] as? Bool {
-                    completion(success)
-                } else {
-                    completion(false)
-                }
-            } catch {
-                completion(false)
-            }
-        }
-        task.resume()
-    }
-
     func moveWatchlistItems(from source: IndexSet, to destination: Int) {
         watchlistModel.watchlist.move(fromOffsets: source, toOffset: destination)
     }

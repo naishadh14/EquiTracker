@@ -18,7 +18,7 @@ struct Home: View {
     @State private var searchIsActive = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .leading) {
                 if walletModel.isLoading || portfolioModel.isLoading || watchlistModel.isLoading {
                     Spacer()
@@ -48,11 +48,11 @@ struct Home: View {
             .onChange(of: searchText.debouncedValue) { newValue in
                 fetchAutocompleteData(for: newValue)
             }
-        }
-        .onAppear {
-            walletModel.fetchWallet()
-            portfolioModel.fetchPortfolio()
-            watchlistModel.fetchWatchlist()
+            .onAppear {
+                walletModel.fetchWallet()
+                portfolioModel.fetchPortfolio()
+                watchlistModel.fetchWatchlist()
+            }
         }
     }
     

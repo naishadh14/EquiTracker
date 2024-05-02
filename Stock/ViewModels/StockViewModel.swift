@@ -20,6 +20,22 @@ class StockViewModel: ObservableObject {
     @Published var news: [NewsItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var isFavorite: Bool = false
+    
+    func fetchPortfolioStock(ticker: String) {
+        StockData.stock.fetchPortfolioStock(ticker: ticker) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let data):
+                    self.quantity = data.0
+                    self.totalCost = data.1
+                    self.avgCost = self.totalCost / Double(self.quantity)
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
     
     func fetchStock(ticker: String) {
         isLoading = true
@@ -98,6 +114,19 @@ class StockViewModel: ObservableObject {
                 switch result {
                 case .success(let money):
                     self.money = money
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.enter()
+        StockData.stock.checkFavorite(ticker: ticker) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let isFavorite):
+                    self.isFavorite = isFavorite
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }

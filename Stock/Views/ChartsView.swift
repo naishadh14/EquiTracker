@@ -12,15 +12,19 @@ import SwiftUI
 struct HourlyChartView: UIViewRepresentable {
     
     let ticker: String
+    let color: String
     
     class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate {
         let ticker: String
-        init(ticker: String) {
+        let color: String
+
+        init(ticker: String, color: String) {
             self.ticker = ticker
+            self.color = color
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            let script = "fetchHourlyChartData('\(ticker)')"
+            let script = "fetchHourlyChartData('\(ticker)', '\(color)')"
             webView.evaluateJavaScript(script, completionHandler: { result, error in
                 if let error = error {
                     print("Error calling JavaScript: \(error)")
@@ -46,7 +50,7 @@ struct HourlyChartView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {}
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(ticker: ticker)
+        return Coordinator(ticker: ticker, color: color)
     }
 }
 

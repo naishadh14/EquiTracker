@@ -12,9 +12,11 @@ struct StockView: View {
     
     @StateObject var stockModel = StockViewModel()
     @State var ticker: String
+    @State private var showToast = false
+    @State private var toastMessage = ""
     
     var body : some View {
-        NavigationView {
+//        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
                     if stockModel.isLoading {
@@ -26,12 +28,15 @@ struct StockView: View {
                         }
                         Spacer()
                     } else {
+                        let color: String = {
+                            if stockModel.price.d > 0 {
+                                return "green"
+                            } else {
+                                return "red"
+                            }
+                        }()
+
                         VStack(alignment: .leading) {
-                            Text("\(ticker)")
-                                .font(.title)
-                                .bold()
-                                .padding(.bottom)
-                            
                             Text("\(stockModel.stock.name)")
                                 .foregroundStyle(.secondary)
                                 .padding(.bottom)
@@ -50,16 +55,15 @@ struct StockView: View {
                             }
                             
                             TabView {
+                                HourlyChartView(ticker: ticker, color: color)
+                                    .frame(height: 400)
+                                    .tabItem {
+                                        Label("Hourly", systemImage: "chart.xyaxis.line")
+                                }
                                 HistoricalChartView(ticker: ticker)
                                     .frame(height: 650)
                                     .tabItem {
                                         Label("Historical", systemImage: "clock")
-                                }
-                                
-                                HourlyChartView(ticker: ticker)
-                                    .frame(height: 400)
-                                    .tabItem {
-                                        Label("Hourly", systemImage: "chart.xyaxis.line")
                                 }
                             }
                             .frame(height: 700)
@@ -81,6 +85,45 @@ struct StockView: View {
                 .padding()
                 .onAppear {
                     stockModel.fetchStock(ticker: ticker)
+                }
+            }
+//        }
+        .overlay(ToastMessage(message: toastMessage, isShowing: $showToast).padding(.vertical, 80), alignment: .bottom)
+        .onChange(of: showToast) {
+            newValue in
+            if newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    showToast = false
+                }
+            }
+        }
+        .navigationTitle("\(stockModel.stock.ticker)")
+        .navigationBarItems(trailing: Button(action: {
+            toggleFavorite()
+        }) {
+            if stockModel.isFavorite {
+                Image(systemName: "plus.circle.fill")
+            } else {
+                Image(systemName: "plus.circle")
+            }
+        })
+    }
+    
+    func toggleFavorite() {
+        if stockModel.isFavorite {
+            removeStockFromFavorite(stockTicker: stockModel.stock.ticker) { success in
+                if success {
+                    stockModel.isFavorite = false
+                    showToast = true
+                    toastMessage = "Removing \(stockModel.stock.ticker) from Favorites"
+                }
+            }
+        } else {
+            addStockToFavorite(stockTicker: stockModel.stock.ticker, name: stockModel.stock.name) { success in
+                if success {
+                    stockModel.isFavorite = true
+                    showToast = true
+                    toastMessage = "Adding \(stockModel.stock.ticker) to Favorites"
                 }
             }
         }
@@ -682,7 +725,7 @@ struct TradeSheetView : View {
             if let error = error {
                 completion(.failure(error))
             } else {
-                print(response)
+                stockModel.fetchPortfolioStock(ticker: stockModel.stock.ticker)
                 completion(.success(()))
             }
         }
@@ -706,7 +749,7 @@ struct TradeSheetView : View {
             if let error = error {
                 completion(.failure(error))
             } else {
-                print(response)
+                stockModel.fetchPortfolioStock(ticker: stockModel.stock.ticker)
                 completion(.success(()))
             }
         }

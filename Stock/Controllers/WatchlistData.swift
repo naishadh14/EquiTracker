@@ -44,3 +44,52 @@ class WatchlistData {
     }
 }
 
+func removeStockFromFavorite(stockTicker: String, completion: @escaping (Bool) -> Void) {
+    guard let url = URL(string: "\(Constants.baseURL)/deleteWatchlist?stock_ticker=\(stockTicker)") else {
+        completion(false)
+        return
+    }
+    
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        guard let data = data, error == nil else {
+            completion(false)
+            return
+        }
+        do {
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+               let success = jsonResponse["success"] as? Bool {
+                completion(success)
+            } else {
+                completion(false)
+            }
+        } catch {
+            completion(false)
+        }
+    }
+    task.resume()
+}
+
+func addStockToFavorite(stockTicker: String, name: String, completion: @escaping (Bool) -> Void) {
+    guard let url = URL(string: "\(Constants.baseURL)/addWatchlist?stock_ticker=\(stockTicker)&name=\(name)") else {
+        completion(false)
+        return
+    }
+    
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        guard let data = data, error == nil else {
+            completion(false)
+            return
+        }
+        do {
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+               let success = jsonResponse["success"] as? Bool {
+                completion(success)
+            } else {
+                completion(false)
+            }
+        } catch {
+            completion(false)
+        }
+    }
+    task.resume()
+}

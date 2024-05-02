@@ -1,10 +1,10 @@
 const SERVER_URL = 'http://localhost:8080';
 //const SERVER_URL = 'https://express-backend-stock-app.uw.r.appspot.com';
 
-async function fetchHourlyChartData(ticker) {
+async function fetchHourlyChartData(ticker, color) {
     const now = new Date();
-    const to = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2);
-    const from = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3);
+    const to = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const from = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
 
     try {
         const response = await axios.get(`${SERVER_URL}/hourlyChart`, {
@@ -14,7 +14,7 @@ async function fetchHourlyChartData(ticker) {
                 to: formatDate(to)
             }
         });
-        renderChart(ticker, response.data);
+        renderChart(ticker, response.data, color);
         return true;
     } catch (error) {
         console.error('Error fetching hourly chart data:', error);
@@ -23,13 +23,11 @@ async function fetchHourlyChartData(ticker) {
     }
 }
 
-function renderChart(ticker, chartData) {
+function renderChart(ticker, chartData, color) {
     if (!chartData || !chartData.results) {
         renderErrorMessage();
         return;
     }
-
-    const color = chartData.positive ? 'green' : 'red';
 
     Highcharts.chart('chartContainer', {
         chart: {
@@ -76,6 +74,13 @@ function renderChart(ticker, chartData) {
             enabled: false
         }
     });
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
 function renderErrorMessage() {

@@ -13,6 +13,31 @@ class StockData {
     
     private init() {}
     
+    func checkFavorite(ticker: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        if Constants.testing {
+            completion(.success(true))
+            return
+        }
+        
+        let url = Constants.baseURL + "/checkWatchlist?stock_ticker=\(ticker)"
+        AF.request(url).responseJSON { response in
+            do {
+                switch response.result {
+                    case .success(let value):
+                        if let success = (value as? [String: Any])?["success"] as? Bool {
+                            completion(.success(success))
+                        } else {
+                            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unexpected data"])))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func fetchNews(ticker: String, completion:  @escaping (Result<[NewsItem], Error>) -> Void) {
         if Constants.testing {
             let testData: [NewsItem] = [
