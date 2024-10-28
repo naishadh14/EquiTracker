@@ -1,0 +1,1 @@
+EquiTracker [Equity Tracker] is an iOS app built for managing your portfolio. It can function as a complete stock market simulator. You can view up-to-date stock prices, buy/sell shares, track portfolio value, analyze charts and even read news articles pertaining to the selected stock.
